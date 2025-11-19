@@ -1,3 +1,4 @@
-public abstract class Pessoa {
+package TFPOO;
 
+public abstract class Pessoa {
 }

@@ -1,3 +1,4 @@
-public class Cliente extends Pessoa {
+package TFPOO;
 
+public class Cliente extends Pessoa {
 }
