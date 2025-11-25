@@ -9,4 +9,12 @@ public class Cliente extends Pessoa {
         this.rg = rg;
         this.telefone = telefone;
     }
+
+    public int getRg() {
+        return rg;
+    }
+
+    public int getTelefone() {
+        return telefone;
+    }
 }
