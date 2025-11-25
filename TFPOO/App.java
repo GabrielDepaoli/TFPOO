@@ -26,14 +26,47 @@ public class App {
             switch(esc){
 
                 case 1:
-                    System.out.print("Nome: ");
-                    String nome = tec.nextLine();
-                    System.out.print("RG: ");
-                    int rg = tec.nextInt();
-                    System.out.print("Telefone: ");
-                    int tel = tec.nextInt();
-                    op.cadastrarCliente(nome, rg, tel);
-                    break;
+                String nome; // Utilizamos String em todos os dados para realizar a validação utilizando Char
+                String rg;
+                String telefone;
+
+                while (true) {
+                    try {
+                        System.out.print("Nome: ");
+                        nome = tec.nextLine();
+                        Validador.validarNome(nome);
+                        break;
+
+                    } catch (DadoInvalidoException e) {
+                        System.out.println("Erro: " + e.getMessage());
+                    }
+                }
+
+                while (true) {
+                    try {
+                        System.out.print("RG: ");
+                        rg = tec.nextLine();
+                        Validador.validarRg(rg);
+                        break;
+
+                    } catch (DadoInvalidoException e) {
+                        System.out.println("Erro: " + e.getMessage());
+                    }
+                }
+
+                while (true) {
+                    try {
+                        System.out.print("Telefone (DD999999999): ");
+                        telefone = tec.nextLine();
+                        Validador.validarTelefone(telefone);
+                        break;
+
+                    } catch (DadoInvalidoException e) {
+                        System.out.println("Erro: " + e.getMessage());
+                    }
+                }
+                op.cadastrarCliente(nome, rg, telefone);
+                break;
 
                 case 2:
                     System.out.print("Código: ");
@@ -69,7 +102,7 @@ public class App {
 
                 case 4:
                     System.out.print("RG do cliente: ");
-                    int rgc = tec.nextInt();
+                    String rgc = tec.nextLine();
                     System.out.print("Código do voo: ");
                     int cv = tec.nextInt();
                     op.venderPassagem(rgc, cv);
@@ -77,7 +110,7 @@ public class App {
 
                 case 5:
                     System.out.print("RG do cliente para relatório: ");
-                    int rgr = tec.nextInt();
+                    String rgr = tec.nextLine();
                     op.relatorioPorCliente(rgr);
                     break;
 
