@@ -31,13 +31,13 @@ public class Empresa implements Cadastro<Cliente> {
     }
     
     public void exibirMenu(){
-        System.out.println("\n==== BLINK AIRLINES ====");
+        System.out.println("\n======== BLINK AIRLINES ========");
         System.out.println("1 - Cadastrar Cliente");
         System.out.println("2 - Cadastrar Avião");
         System.out.println("3 - Cadastrar Voo");
         System.out.println("4 - Vender Passagem");
         System.out.println("5 - Gerar Relatório do Sistema");
-        System.out.println("====== Digite 0 para Sair e Salvar ======");
+        System.out.println("== Digite 0 para Sair e Salvar ==");
     }
  
     public void cadastrarCliente(String nome, String rg, String telefone){
@@ -84,35 +84,46 @@ public class Empresa implements Cadastro<Cliente> {
 
 
     public void venderPassagem(String rgCliente, int codVoo){
-        Cliente cli = clientes.stream()
-                        .filter(c -> c.getRg().equals(rgCliente))
-                        .findFirst()
-                        .orElse(null);
 
-        Voo voo = voos.stream()
-                        .filter(v -> v.getCodigo() == codVoo)
-                        .findFirst()
-                        .orElse(null);
+    // Buscar cliente
+    Cliente cli = clientes.stream()
+            .filter(c -> c.getRg().trim().equals(rgCliente.trim()))
+            .findFirst()
+            .orElse(null);
 
-        if(cli == null || voo == null){
-            System.out.println("Cliente ou voo não encontrado.");
-            return;
-        }
+    // Buscar voo
+    Voo voo = voos.stream()
+            .filter(v -> v.getCodigo() == codVoo)
+            .findFirst()
+            .orElse(null);
 
-        if(voo.getAviao().getAssentos() <= 0){
-            System.out.println("Sem assentos disponíveis.");
-            return;
-        }
-
-        voo.getAviao().diminuirAssento();
-        Venda novaVenda = new Venda(cli, voo);
-        vendas.add(novaVenda);
-        
-        GerenciadorArquivos.registrarVenda(novaVenda);
-
-        System.out.println("Passagem vendida!");
+    if(cli == null){
+        System.out.println("ERRO: Cliente com RG " + rgCliente + " não encontrado.");
+        return;
     }
 
+    if(voo == null){
+        System.out.println("ERRO: Voo de código " + codVoo + " não encontrado.");
+        return;
+    }
+
+    // Assentos restantes
+    int assentosRestantes = voo.getAviao().getAssentos() - 
+            (int) vendas.stream()
+                 .filter(v -> v.getVoo().getCodigo() == codVoo)
+                 .count();
+
+    if(assentosRestantes <= 0){
+        System.out.println("ERRO: Voo lotado.");
+        return;
+    }
+
+    // Registrar venda
+    Venda venda = new Venda(cli, voo);
+    vendas.add(venda);
+
+    System.out.println("\nVenda realizada com sucesso!\n");
+}
 
     public void relatorioPorCliente(String rg){
         System.out.println("--- Passagens compradas pelo RG " + rg + " ---");
