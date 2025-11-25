@@ -15,7 +15,6 @@ public class GerenciadorArquivos {
         salvarClientes(empresa.getClientes());
         salvarAvioes(empresa.getAvioes());
         salvarVoos(empresa.getVoos());
-        // Vendas são salvas em tempo real ou você pode implementar aqui se quiser
     }
 
     public void carregarDados(Empresa empresa) {
@@ -25,7 +24,6 @@ public class GerenciadorArquivos {
         carregarVoos(empresa.getVoos(), empresa.getAvioes(), empresa.getMapaVoos(), empresa.getDestinos());
     }
 
-    // --- Clientes ---
     private void salvarClientes(List<Cliente> clientes) {
         try (PrintWriter pw = new PrintWriter(new FileWriter(ARQ_CLIENTES))) {
             for (Cliente c : clientes) {
@@ -53,7 +51,6 @@ public class GerenciadorArquivos {
         }
     }
 
-    // --- Aviões ---
     private void salvarAvioes(List<Aviao> avioes) {
         try (PrintWriter pw = new PrintWriter(new FileWriter(ARQ_AVIOES))) {
             for (Aviao a : avioes) {
@@ -83,7 +80,6 @@ public class GerenciadorArquivos {
         }
     }
 
-    // --- Voos ---
     private void salvarVoos(List<Voo> voos) {
         try (PrintWriter pw = new PrintWriter(new FileWriter(ARQ_VOOS))) {
             for (Voo v : voos) {
@@ -107,7 +103,6 @@ public class GerenciadorArquivos {
                     int codVoo = Integer.parseInt(dados[0]);
                     int codAviao = Integer.parseInt(dados[4]);
                     
-                    // Busca o objeto Avião na lista já carregada
                     Aviao aviaoVinculado = avioes.stream()
                             .filter(a -> a.getCodigo() == codAviao)
                             .findFirst()
@@ -127,7 +122,6 @@ public class GerenciadorArquivos {
         }
     }
 
-    // Método estático auxiliar para salvar vendas individualmente (log)
     public static void registrarVenda(Venda venda) {
         try (FileWriter fw = new FileWriter(ARQ_VENDAS, true)) {
             fw.write("Cliente: " + venda.getCliente().getNome()

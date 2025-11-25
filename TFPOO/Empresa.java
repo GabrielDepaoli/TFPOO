@@ -10,18 +10,13 @@ public class Empresa implements Cadastro<Cliente> {
     private List<Venda> vendas = new ArrayList<>();
     private Set<String> destinos = new HashSet<>();
     private Map<Integer, Voo> mapaVoos = new HashMap<>();
-
-    public Empresa() {
-        // Construtor vazio, sem lógica de arquivos
-    }
     
-    // === Getters para permitir acesso ao Gerenciador de Arquivos ===
+    // gets e sets para arquivos
     public List<Cliente> getClientes() { return clientes; }
     public List<Aviao> getAvioes() { return avioes; }
     public List<Voo> getVoos() { return voos; }
     public Map<Integer, Voo> getMapaVoos() { return mapaVoos; }
     public Set<String> getDestinos() { return destinos; }
-    // ==============================================================
 
     @Override
     public void adicionar(Cliente c) {
@@ -46,7 +41,7 @@ public class Empresa implements Cadastro<Cliente> {
     }
  
     public void cadastrarCliente(String nome, String rg, String telefone){
-        boolean existe = clientes.stream().anyMatch(c -> c.getRg().equals(rg)); // Bug corrigido
+        boolean existe = clientes.stream().anyMatch(c -> c.getRg().equals(rg)); 
 
         if(existe){
             System.out.println("Cliente já existe.");
@@ -90,7 +85,7 @@ public class Empresa implements Cadastro<Cliente> {
 
     public void venderPassagem(String rgCliente, int codVoo){
         Cliente cli = clientes.stream()
-                        .filter(c -> c.getRg().equals(rgCliente)) // Bug corrigido
+                        .filter(c -> c.getRg().equals(rgCliente))
                         .findFirst()
                         .orElse(null);
 
@@ -113,7 +108,6 @@ public class Empresa implements Cadastro<Cliente> {
         Venda novaVenda = new Venda(cli, voo);
         vendas.add(novaVenda);
         
-        // Agora usamos a nova classe para registrar o log
         GerenciadorArquivos.registrarVenda(novaVenda);
 
         System.out.println("Passagem vendida!");
@@ -123,7 +117,7 @@ public class Empresa implements Cadastro<Cliente> {
     public void relatorioPorCliente(String rg){
         System.out.println("--- Passagens compradas pelo RG " + rg + " ---");
         vendas.stream()
-              .filter(v -> v.getCliente().getRg().equals(rg)) // Bug corrigido
+              .filter(v -> v.getCliente().getRg().equals(rg))
               .forEach(v -> {
                   System.out.println("- Voo: " + v.getVoo().getCodigo() 
                       + " | Origem: " + v.getVoo().getOrigem()

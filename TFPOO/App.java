@@ -6,13 +6,8 @@ public class App {
     public static void main(String[] args){
         Scanner tec = new Scanner(System.in);
         
-        // 1. Instancia a Empresa (lógica de negócio)
         Empresa op = new Empresa(); 
-        
-        // 2. Instancia o Gerenciador de Arquivos (persistência)
         GerenciadorArquivos gerenciador = new GerenciadorArquivos();
-
-        // 3. Carrega os dados dos arquivos para dentro da Empresa
         gerenciador.carregarDados(op);
 
         int esc;
@@ -37,7 +32,7 @@ public class App {
                 String nome; 
                 String rg;
                 String telefone;
-                // ... validações (código igual ao anterior) ...
+                
                 while (true) {
                     try {
                         System.out.print("Nome: ");
@@ -109,7 +104,6 @@ public class App {
                     break;
 
                 case 0:
-                    // 4. Salva tudo antes de sair
                     gerenciador.salvarDados(op);
                     System.out.println("Encerrando...");
                     break;
