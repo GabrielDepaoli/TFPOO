@@ -1,7 +1,6 @@
 package TFPOO;
 
 import java.util.*;
-import java.io.*;
 
 public class Empresa implements Cadastro<Cliente> {
 
@@ -12,29 +11,42 @@ public class Empresa implements Cadastro<Cliente> {
     private Set<String> destinos = new HashSet<>();
     private Map<Integer, Voo> mapaVoos = new HashMap<>();
 
+    public Empresa() {
+        // Construtor vazio, sem lógica de arquivos
+    }
     
+    // === Getters para permitir acesso ao Gerenciador de Arquivos ===
+    public List<Cliente> getClientes() { return clientes; }
+    public List<Aviao> getAvioes() { return avioes; }
+    public List<Voo> getVoos() { return voos; }
+    public Map<Integer, Voo> getMapaVoos() { return mapaVoos; }
+    public Set<String> getDestinos() { return destinos; }
+    // ==============================================================
+
+    @Override
     public void adicionar(Cliente c) {
         clientes.add(c);
     }
 
+    @Override
     public void listar() {
         for (Cliente c : clientes) {
-            System.out.println(c);
+            System.out.println("Nome: " + c.getNome() + " | RG: " + c.getRg());
         }
     }
     
     public void exibirMenu(){
-        System.out.println("==== BLINK AIRLINES ====");
+        System.out.println("\n==== BLINK AIRLINES ====");
         System.out.println("1 - Cadastrar Cliente");
         System.out.println("2 - Cadastrar Avião");
-        System.out.println("3 - Cadastrar Vo0");
+        System.out.println("3 - Cadastrar Voo");
         System.out.println("4 - Vender Passagem");
         System.out.println("5 - Gerar Relatório do Sistema");
-        System.out.println("====== Digite 0 para Sair ======");
+        System.out.println("====== Digite 0 para Sair e Salvar ======");
     }
  
     public void cadastrarCliente(String nome, String rg, String telefone){
-        boolean existe = clientes.stream().anyMatch(c -> c.getRg() == rg);
+        boolean existe = clientes.stream().anyMatch(c -> c.getRg().equals(rg)); // Bug corrigido
 
         if(existe){
             System.out.println("Cliente já existe.");
@@ -78,7 +90,7 @@ public class Empresa implements Cadastro<Cliente> {
 
     public void venderPassagem(String rgCliente, int codVoo){
         Cliente cli = clientes.stream()
-                        .filter(c -> c.getRg() == rgCliente)
+                        .filter(c -> c.getRg().equals(rgCliente)) // Bug corrigido
                         .findFirst()
                         .orElse(null);
 
@@ -98,17 +110,20 @@ public class Empresa implements Cadastro<Cliente> {
         }
 
         voo.getAviao().diminuirAssento();
-        vendas.add(new Venda(cli, voo));
-        salvarVendaArquivo(new Venda(cli, voo));
-
+        Venda novaVenda = new Venda(cli, voo);
+        vendas.add(novaVenda);
+        
+        // Agora usamos a nova classe para registrar o log
+        GerenciadorArquivos.registrarVenda(novaVenda);
 
         System.out.println("Passagem vendida!");
     }
 
 
     public void relatorioPorCliente(String rg){
+        System.out.println("--- Passagens compradas pelo RG " + rg + " ---");
         vendas.stream()
-              .filter(v -> v.getCliente().getRg() == rg)
+              .filter(v -> v.getCliente().getRg().equals(rg)) // Bug corrigido
               .forEach(v -> {
                   System.out.println("- Voo: " + v.getVoo().getCodigo() 
                       + " | Origem: " + v.getVoo().getOrigem()
@@ -120,20 +135,6 @@ public class Empresa implements Cadastro<Cliente> {
         voos.stream()
             .filter(v -> v.getOrigem().equalsIgnoreCase(origem))
             .forEach(v -> System.out.println("- Voo " + v.getCodigo() + " para " + v.getDestino()));
-    }
-
-    private void salvarVendaArquivo(Venda venda){
-        try {
-            FileWriter fw = new FileWriter("vendas.txt", true);
-            fw.write("Cliente: " + venda.getCliente().getNome()
-                    + "  Voo: " + venda.getVoo().getCodigo()
-                    + "  Destino: " + venda.getVoo().getDestino()
-                    + "  Data: " + venda.getData().toString()
-                    + "\n");
-            fw.close();
-        } catch (IOException e){
-            System.out.println("Erro ao salvar venda no arquivo.");
-        }
     }
 
 }

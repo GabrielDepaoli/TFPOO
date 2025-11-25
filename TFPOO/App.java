@@ -5,7 +5,15 @@ import java.util.Scanner;
 public class App {
     public static void main(String[] args){
         Scanner tec = new Scanner(System.in);
-        Empresa op = new Empresa();
+        
+        // 1. Instancia a Empresa (lógica de negócio)
+        Empresa op = new Empresa(); 
+        
+        // 2. Instancia o Gerenciador de Arquivos (persistência)
+        GerenciadorArquivos gerenciador = new GerenciadorArquivos();
+
+        // 3. Carrega os dados dos arquivos para dentro da Empresa
+        gerenciador.carregarDados(op);
 
         int esc;
 
@@ -26,44 +34,33 @@ public class App {
             switch(esc){
 
                 case 1:
-                String nome; // Utilizamos String em todos os dados para realizar a validação utilizando Char
+                String nome; 
                 String rg;
                 String telefone;
-
+                // ... validações (código igual ao anterior) ...
                 while (true) {
                     try {
                         System.out.print("Nome: ");
                         nome = tec.nextLine();
                         Validador.validarNome(nome);
                         break;
-
-                    } catch (DadoInvalidoException e) {
-                        System.out.println("Erro: " + e.getMessage());
-                    }
+                    } catch (DadoInvalidoException e) { System.out.println("Erro: " + e.getMessage()); }
                 }
-
                 while (true) {
                     try {
                         System.out.print("RG: ");
                         rg = tec.nextLine();
                         Validador.validarRg(rg);
                         break;
-
-                    } catch (DadoInvalidoException e) {
-                        System.out.println("Erro: " + e.getMessage());
-                    }
+                    } catch (DadoInvalidoException e) { System.out.println("Erro: " + e.getMessage()); }
                 }
-
                 while (true) {
                     try {
-                        System.out.print("Telefone (DD999999999): ");
+                        System.out.print("Telefone: ");
                         telefone = tec.nextLine();
                         Validador.validarTelefone(telefone);
                         break;
-
-                    } catch (DadoInvalidoException e) {
-                        System.out.println("Erro: " + e.getMessage());
-                    }
+                    } catch (DadoInvalidoException e) { System.out.println("Erro: " + e.getMessage()); }
                 }
                 op.cadastrarCliente(nome, rg, telefone);
                 break;
@@ -91,12 +88,9 @@ public class App {
                     String hor = tec.nextLine();
                     System.out.print("Código do avião: ");
                     int codAv = tec.nextInt();
-                    System.out.println("Período do voo (1-Manhã / 2-Tarde / 3-Noite): ");
+                    System.out.println("Período (1-Manhã / 2-Tarde / 3-Noite): ");
                     int p = tec.nextInt();
-                    Periodo per;
-                    if(p == 1) per = Periodo.MANHA;
-                    else if(p == 2) per = Periodo.TARDE;
-                    else per = Periodo.NOITE;
+                    Periodo per = (p == 1) ? Periodo.MANHA : (p == 2) ? Periodo.TARDE : Periodo.NOITE;
                     op.cadastrarVoo(codV, ori, des, hor, codAv, per);
                     break;
 
@@ -109,12 +103,14 @@ public class App {
                     break;
 
                 case 5:
-                    System.out.print("RG do cliente para relatório: ");
+                    System.out.print("RG do cliente: ");
                     String rgr = tec.nextLine();
                     op.relatorioPorCliente(rgr);
                     break;
 
                 case 0:
+                    // 4. Salva tudo antes de sair
+                    gerenciador.salvarDados(op);
                     System.out.println("Encerrando...");
                     break;
 
