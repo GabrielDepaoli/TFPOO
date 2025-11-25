@@ -24,7 +24,7 @@ public class Empresa {
         System.out.println("====== Digite 0 para Sair ======");
     }
  
-    public void cadastrarCliente(String nome, int rg, int telefone){
+    public void cadastrarCliente(String nome, String rg, String telefone){
         boolean existe = clientes.stream().anyMatch(c -> c.getRg() == rg);
 
         if(existe){
@@ -67,7 +67,7 @@ public class Empresa {
     }
 
 
-    public void venderPassagem(int rgCliente, int codVoo){
+    public void venderPassagem(String rgCliente, int codVoo){
         Cliente cli = clientes.stream()
                         .filter(c -> c.getRg() == rgCliente)
                         .findFirst()
@@ -97,7 +97,7 @@ public class Empresa {
     }
 
 
-    public void relatorioPorCliente(int rg){
+    public void relatorioPorCliente(String rg){
         vendas.stream()
               .filter(v -> v.getCliente().getRg() == rg)
               .forEach(v -> {

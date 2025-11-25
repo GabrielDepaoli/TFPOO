@@ -1,20 +1,20 @@
 package TFPOO;
 
 public class Cliente extends Pessoa {
-    private int rg;
-    private int telefone;
+    private String rg;
+    private String telefone;
 
-    public Cliente(String nome, int rg, int telefone){
+    public Cliente(String nome, String rg, String telefone){
         super (nome);
         this.rg = rg;
         this.telefone = telefone;
     }
 
-    public int getRg() {
+    public String getRg() {
         return rg;
     }
 
-    public int getTelefone() {
+    public String getTelefone() {
         return telefone;
     }
 }
