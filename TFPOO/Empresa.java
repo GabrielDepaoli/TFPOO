@@ -3,7 +3,7 @@ package TFPOO;
 import java.util.*;
 import java.io.*;
 
-public class Empresa {
+public class Empresa implements Cadastro<Cliente> {
 
     private List<Cliente> clientes = new ArrayList<>();
     private List<Aviao> avioes = new ArrayList<>();
@@ -12,7 +12,16 @@ public class Empresa {
     private Set<String> destinos = new HashSet<>();
     private Map<Integer, Voo> mapaVoos = new HashMap<>();
 
+    
+    public void adicionar(Cliente c) {
+        clientes.add(c);
+    }
 
+    public void listar() {
+        for (Cliente c : clientes) {
+            System.out.println(c);
+        }
+    }
     
     public void exibirMenu(){
         System.out.println("==== BLINK AIRLINES ====");
