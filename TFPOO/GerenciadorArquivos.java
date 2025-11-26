@@ -5,7 +5,7 @@ import java.util.List;
 
 public class GerenciadorArquivos {
 
-    private final String pasta = "arquivosTXT";
+    private final String pasta = "TFPOO/arquivosTXT";
 
     public GerenciadorArquivos() {
         File dir = new File(pasta);
