@@ -1,0 +1,31 @@
+==== RELATORIO DE VENDAS ====
+
+Cliente: Gabriel Depaoli
+RG: 1111111
+Telefone: 11111111111
+Voo: 1111
+Origem: POA - TRS
+Destino: GUA - SP
+Horario: 14hrs
+Periodo: TARDE
+------------------------------------------
+Cliente: Jadson Rocha
+RG: 2222222
+Telefone: 22222222222
+Voo: 2222
+Origem: POA - RS
+Destino: CON - SP
+Horario: 20hrs
+Periodo: NOITE
+------------------------------------------
+Cliente: teste
+RG: 777777777
+Telefone: 77777777777
+Voo: 1233
+Origem: teste
+Destino: tsete
+Horario: 12h
+Periodo: MANHA
+------------------------------------------
+
+Total de vendas: 3

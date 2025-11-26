@@ -5,7 +5,7 @@ import java.util.List;
 
 public class GerenciadorArquivos {
 
-    private final String pasta = "TFPOO/arquivosTXT";
+    private final String pasta = "arquivosTXT";
 
     public GerenciadorArquivos() {
         File dir = new File(pasta);
@@ -14,9 +14,7 @@ public class GerenciadorArquivos {
         }
     }
 
-    // ============================
-    // SALVAR CLIENTES
-    // ============================
+    // salvar clientes
     public void salvarClientes(List<Cliente> clientes) {
         try (BufferedWriter bw = new BufferedWriter(
                 new FileWriter(pasta + "/clientes.txt"))) {
@@ -31,9 +29,7 @@ public class GerenciadorArquivos {
         }
     }
 
-    // ============================
-    // SALVAR AVIÕES
-    // ============================
+    // salvar aviões
     public void salvarAvioes(List<Aviao> avioes) {
         try (BufferedWriter bw = new BufferedWriter(
                 new FileWriter(pasta + "/avioes.txt"))) {
@@ -48,9 +44,7 @@ public class GerenciadorArquivos {
         }
     }
 
-    // ============================
-    // SALVAR VOOS
-    // ============================
+    // salvar voos
     public void salvarVoos(List<Voo> voos) {
         try (BufferedWriter bw = new BufferedWriter(
                 new FileWriter(pasta + "/voos.txt"))) {
@@ -72,9 +66,7 @@ public class GerenciadorArquivos {
         }
     }
 
-    // ============================
-    // SALVAR VENDAS
-    // ============================
+    // salavar vendas
     public void salvarVendas(List<Venda> vendas) {
         try (BufferedWriter bw = new BufferedWriter(
                 new FileWriter(pasta + "/vendas.txt"))) {
@@ -92,9 +84,7 @@ public class GerenciadorArquivos {
         }
     }
 
-    // ============================
-    // CARREGAR CLIENTES
-    // ============================
+    // carregar clientes
     public void carregarClientes(Empresa empresa) {
         empresa.getClientes().clear();
 
@@ -114,9 +104,7 @@ public class GerenciadorArquivos {
         }
     }
 
-    // ============================
-    // CARREGAR AVIÕES
-    // ============================
+    // carregar aviões
     public void carregarAvioes(Empresa empresa) {
         empresa.getAvioes().clear();
 
@@ -138,9 +126,7 @@ public class GerenciadorArquivos {
         }
     }
 
-    // ============================
-    // CARREGAR VOOS
-    // ============================
+    // carregar voos
     public void carregarVoos(Empresa empresa) {
         empresa.getVoos().clear();
 
@@ -174,9 +160,7 @@ public class GerenciadorArquivos {
         }
     }
 
-    // ============================
-    // CARREGAR VENDAS
-    // ============================
+    // carregar vendas
     public void carregarVendas(Empresa empresa) {
         empresa.getVendas().clear();
 

@@ -1,5 +1,5 @@
 package TFPOO;
-
+// classe Cliente que herda de Pessoa, com atributos, construtor e getters
 public class Cliente extends Pessoa {
     private String rg;
     private String telefone;

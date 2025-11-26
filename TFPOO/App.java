@@ -16,7 +16,7 @@ public class App {
 
         int esc;
 
-        do {
+        do { // loop do menu principal
             op.exibirMenu();
             System.out.print("Escolha: ");
 

@@ -23,6 +23,7 @@ public class Empresa implements Cadastro<Cliente> {
         }
     }
     
+    // exibir menu da empresa 
     public void exibirMenu(){
         System.out.println("\n==== BLINK AIRLINES ====");
         System.out.println("1 - Cadastrar Cliente");
@@ -32,9 +33,10 @@ public class Empresa implements Cadastro<Cliente> {
         System.out.println("5 - Gerar Relatório do Sistema");
         System.out.println("====== Digite 0 para Sair ======");
     }
- 
+    
+    // cadastrar cliente com verificação de RG único
     public void cadastrarCliente(String nome, String rg, String telefone){
-        boolean existe = clientes.stream().anyMatch(c -> c.getRg() == rg);
+        boolean existe = clientes.stream().anyMatch(c -> c.getRg() == rg); // verificar existência
 
         if(existe){
             System.out.println("Cliente já existe.");
@@ -46,7 +48,7 @@ public class Empresa implements Cadastro<Cliente> {
     }
 
     public void cadastrarAviao(int codigo, String nome, int assentos){
-        if(assentos <= 0){
+        if(assentos <= 0){ // verificar assentos 
             System.out.println("Quantidade de assentos inválida.");
             return;
         }
@@ -55,8 +57,9 @@ public class Empresa implements Cadastro<Cliente> {
         System.out.println("Avião cadastrado!");
     }
 
+    // cadastrar voo usando código do avião
     public void cadastrarVoo(int codigo, String origem, String destino, String horario, int codAviao, Periodo periodo){
-        Aviao av = avioes.stream()
+        Aviao av = avioes.stream() // buscar avião pelo código
                         .filter(a -> a.getCodigo() == codAviao)
                         .findFirst()
                         .orElse(null);
@@ -75,7 +78,7 @@ public class Empresa implements Cadastro<Cliente> {
         System.out.println("Voo cadastrado!");
     }
 
-
+    // vender passagem para cliente e voo específicos
     public void venderPassagem(String rgCliente, int codVoo) {
 
         Cliente cli = clientes.stream() // buscar cliente
@@ -110,6 +113,7 @@ public class Empresa implements Cadastro<Cliente> {
         System.out.println("Passagem vendida!");
     }
 
+    // gerar relatório de vendas por cliente com RG específico
     public void relatorioPorCliente(String rg){
         vendas.stream()
               .filter(v -> v.getCliente().getRg() == rg)
@@ -119,27 +123,14 @@ public class Empresa implements Cadastro<Cliente> {
                       + " | Destino: " + v.getVoo().getDestino());
               });
     }
-
+    // gerar relatório de voos por origem
     public void relatorioVoosPorOrigem(String origem){
         voos.stream()
             .filter(v -> v.getOrigem().equalsIgnoreCase(origem))
             .forEach(v -> System.out.println("- Voo " + v.getCodigo() + " para " + v.getDestino()));
     }
 
-    private void salvarVendaArquivo(Venda venda){
-        try {
-            FileWriter fw = new FileWriter("vendas.txt", true);
-            fw.write("Cliente: " + venda.getCliente().getNome()
-                    + "  Voo: " + venda.getVoo().getCodigo()
-                    + "  Destino: " + venda.getVoo().getDestino()
-                    + "  Data: " + venda.getData().toString()
-                    + "\n");
-            fw.close();
-        } catch (IOException e){
-            System.out.println("Erro ao salvar venda no arquivo.");
-        }
-    }
-
+    // getters para listas privadas
     public List<Cliente> getClientes() {
     return clientes;
     }
