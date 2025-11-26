@@ -7,6 +7,13 @@ public class App {
         Scanner tec = new Scanner(System.in);
         Empresa op = new Empresa();
 
+        GerenciadorArquivos ger = new GerenciadorArquivos();
+
+        ger.carregarClientes(op);
+        ger.carregarAvioes(op);
+        ger.carregarVoos(op);
+        ger.carregarVendas(op);
+
         int esc;
 
         do {
@@ -32,7 +39,7 @@ public class App {
 
                 while (true) {
                     try {
-                        System.out.print("Nome: ");
+                        System.out.print("\nNome: ");
                         nome = tec.nextLine();
                         Validador.validarNome(nome);
                         break;
@@ -44,7 +51,7 @@ public class App {
 
                 while (true) {
                     try {
-                        System.out.print("RG: ");
+                        System.out.print("\nRG: ");
                         rg = tec.nextLine();
                         Validador.validarRg(rg);
                         break;
@@ -56,7 +63,7 @@ public class App {
 
                 while (true) {
                     try {
-                        System.out.print("Telefone (DD999999999): ");
+                        System.out.print("\nTelefone (DD999999999): ");
                         telefone = tec.nextLine();
                         Validador.validarTelefone(telefone);
                         break;
@@ -65,7 +72,8 @@ public class App {
                         System.out.println("Erro: " + e.getMessage());
                     }
                 }
-                op.cadastrarCliente(nome, rg, telefone);
+                op.cadastrarCliente(nome, rg, telefone); // conclui cadastro
+                ger.salvarClientes(op.getClientes()); // salva automaticamente
                 break;
 
                 case 2:
@@ -77,6 +85,7 @@ public class App {
                     System.out.print("Assentos: ");
                     int as = tec.nextInt();
                     op.cadastrarAviao(codA, nomA, as);
+                    ger.salvarAvioes(op.getAvioes());
                     break;
 
                 case 3:
@@ -98,20 +107,45 @@ public class App {
                     else if(p == 2) per = Periodo.TARDE;
                     else per = Periodo.NOITE;
                     op.cadastrarVoo(codV, ori, des, hor, codAv, per);
+                    ger.salvarVoos(op.getVoos());
                     break;
 
                 case 4:
+                    System.out.println("\n=== CLIENTES CADASTRADOS ===");
+                    if (op.getClientes().isEmpty()) {
+                        System.out.println("Nenhum cliente cadastrado."); // lista os clientes cadastrados
+                        break;
+                    }
+                    for (Cliente c : op.getClientes()) {
+                        System.out.println("Nome: " + c.getNome() +
+                                        " | RG: " + c.getRg() +
+                                        " | Telefone: " + c.getTelefone());
+                    }
+
                     System.out.print("RG do cliente: ");
                     String rgc = tec.nextLine();
+
+                    System.out.println("\n=== VOOS CADASTRADOS ==="); // lista os voos cadastrados
+                    if (op.getVoos().isEmpty()) {
+                        System.out.println("Nenhum voo cadastrado.");
+                        break;
+                    }
+                    for (Voo v : op.getVoos()) {
+                        System.out.println(
+                            "Código: " + v.getCodigo() +
+                            " | " + v.getOrigem() + " -> " + v.getDestino() +
+                            " | Horário: " + v.getHorario() +
+                            " | Período: " + v.getPeriodo()
+                        );
+                    }
                     System.out.print("Código do voo: ");
                     int cv = tec.nextInt();
                     op.venderPassagem(rgc, cv);
+                    ger.salvarVendas(op.getVendas());
                     break;
 
                 case 5:
-                    System.out.print("RG do cliente para relatório: ");
-                    String rgr = tec.nextLine();
-                    op.relatorioPorCliente(rgr);
+                    ger.gerarRelatorioVendas(op);
                     break;
 
                 case 0:

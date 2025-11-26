@@ -24,7 +24,7 @@ public class Empresa implements Cadastro<Cliente> {
     }
     
     public void exibirMenu(){
-        System.out.println("==== BLINK AIRLINES ====");
+        System.out.println("\n==== BLINK AIRLINES ====");
         System.out.println("1 - Cadastrar Cliente");
         System.out.println("2 - Cadastrar Avião");
         System.out.println("3 - Cadastrar Vo0");
@@ -76,35 +76,39 @@ public class Empresa implements Cadastro<Cliente> {
     }
 
 
-    public void venderPassagem(String rgCliente, int codVoo){
-        Cliente cli = clientes.stream()
-                        .filter(c -> c.getRg() == rgCliente)
-                        .findFirst()
-                        .orElse(null);
+    public void venderPassagem(String rgCliente, int codVoo) {
 
-        Voo voo = voos.stream()
-                        .filter(v -> v.getCodigo() == codVoo)
-                        .findFirst()
-                        .orElse(null);
+        Cliente cli = clientes.stream() // buscar cliente
+                .filter(c -> c.getRg().trim().equalsIgnoreCase(rgCliente.trim()))
+                .findFirst()
+                .orElse(null);
 
-        if(cli == null || voo == null){
+        Voo voo = voos.stream() // Buscar voo
+                .filter(v -> v.getCodigo() == codVoo)
+                .findFirst()
+                .orElse(null);
+
+        if (cli == null || voo == null) {
             System.out.println("Cliente ou voo não encontrado.");
             return;
         }
 
-        if(voo.getAviao().getAssentos() <= 0){
-            System.out.println("Sem assentos disponíveis.");
+        long vendidos = vendas.stream() // Contar assentos já vendidos
+                .filter(v -> v.getVoo().getCodigo() == codVoo)
+                .count();
+
+        int assentosRestantes = voo.getAviao().getAssentos() - (int) vendidos;
+
+        if (assentosRestantes <= 0) {
+            System.out.println("Voo lotado. Não é possível vender mais passagens.");
             return;
         }
 
-        voo.getAviao().diminuirAssento();
-        vendas.add(new Venda(cli, voo));
-        salvarVendaArquivo(new Venda(cli, voo));
-
+        Venda venda = new Venda(cli, voo); // Registrar venda
+        vendas.add(venda);
 
         System.out.println("Passagem vendida!");
     }
-
 
     public void relatorioPorCliente(String rg){
         vendas.stream()
@@ -135,5 +139,22 @@ public class Empresa implements Cadastro<Cliente> {
             System.out.println("Erro ao salvar venda no arquivo.");
         }
     }
+
+    public List<Cliente> getClientes() {
+    return clientes;
+    }
+
+    public List<Aviao> getAvioes() {
+        return avioes;
+    }
+
+    public List<Voo> getVoos() {
+        return voos;
+    }
+
+    public List<Venda> getVendas() {
+        return vendas;
+    }
+
 
 }
