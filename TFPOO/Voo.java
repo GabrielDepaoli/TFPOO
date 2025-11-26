@@ -1,5 +1,5 @@
 package TFPOO;
-
+// classe Voo com atributos, construtor e getters
 public class Voo {
     private int codigo;
     private String origem;

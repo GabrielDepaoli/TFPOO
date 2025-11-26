@@ -1,5 +1,5 @@
 package TFPOO;
-
+// classe Pessoa abstrata construtor e getter
 public abstract class Pessoa {
     private String nome;
     

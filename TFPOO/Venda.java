@@ -1,7 +1,7 @@
 package TFPOO;
 
 import java.time.LocalDateTime;
-
+// classe venda com atributos, construtor e getters
 public class Venda {
     private Cliente cliente;
     private Voo voo;
